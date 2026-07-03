@@ -1,218 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazing Animals - ตารางข้อมูลสัตว์โลกน่ารัก</title>
+    <title>ระบบเก็บข้อมูลแบบตาราง</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 40px;
             color: #333;
-            padding-bottom: 60px;
         }
-
-        /* Header */
-        header {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
-            height: 35vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
             padding: 20px;
-            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        h2 { text-align: center; color: #4A90E2; }
+        
+        /* สไตล์ฟอร์ม */
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-
-        header p {
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
         }
-
-        /* Main Content Container */
-        main {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+        button {
+            padding: 10px 20px;
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
         }
+        button:hover { background-color: #357ABD; }
 
-        /* Responsive Table Container */
-        .table-container {
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            overflow-x: auto; /* รองรับการเลื่อนบนมือถือ */
-        }
-
-        /* Table Styling */
+        /* สไตล์ตาราง */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
-
         th {
-            background-color: #2c3e50;
-            color: white;
-            padding: 18px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            background-color: #f8f9fa;
+            color: #555;
         }
-
-        td {
-            padding: 16px;
-            border-bottom: 1px solid #eef2f3;
-            vertical-align: middle;
-            color: #4a5568;
-            font-size: 1rem;
-            line-height: 1.6;
+        tr:hover { background-color: #f1f1f1; }
+        .delete-btn {
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            font-size: 14px;
         }
-
-        /* ลำดับตัวเลข */
-        .col-number {
-            font-weight: bold;
-            color: #718096;
-            text-align: center;
-            width: 8%;
-        }
-
-        /* ตกแต่งรูปภาพในตาราง */
-        .animal-img {
-            width: 100px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: block;
-        }
-
-        /* ชื่อสัตว์ */
-        .animal-name {
-            font-size: 1.1rem;
-            color: #2d3748;
-            font-weight: 600;
-        }
-
-        /* แถวสลับสีเพื่อให้ดูง่าย */
-        tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        /* เอฟเฟกต์เมื่อวางเมาส์เหนือแถว */
-        tr:hover {
-            background-color: #edf2f7;
-            transition: background-color 0.2s ease;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 30px;
-            background-color: #2c3e50;
-            color: white;
-            margin-top: 60px;
-        }
+        .delete-btn:hover { background-color: #c0392b; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Amazing Animals Table</h1>
-        <p>ตารางสรุปข้อมูล ภาพถ่าย และลักษณะเด่นของเหล่าสัตว์โลกน่ารัก</p>
-    </header>
+<div class="container">
+    <h2>📊 ระบบบันทึกข้อมูลตาราง</h2>
+    
+    <div class="form-group">
+        <input type="text" id="nameInput" placeholder="ชื่อ-นามสกุล">
+        <input type="text" id="roleInput" placeholder="ตำแหน่ง / บทบาท">
+        <button onclick="addData()">เพิ่มข้อมูล</button>
+    </div>
 
-    <main>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="text-align: center;">ลำดับ</th>
-                        <th>รูปภาพ</th>
-                        <th>ชื่อสัตว์</th>
-                        <th>รายละเอียดและลักษณะเด่น</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ชื่อ-นามสกุล</th>
+                <th>ตำแหน่ง / บทบาท</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+</div>
 
-                    <tr>
-                        <td class="col-number">1</td>
-                        <td>
-                            <img src="https://www.shutterstock.com/image-photo/ein-hundewelpe-ist-draussen-und-260nw-2478953593.jpg" alt="สุนัข" class="animal-img">
-                        </td>
-                        <td class="animal-name">สุนัข (Dog)</td>
-                        <td>เพื่อนแท้สี่ขาที่มีความจงรักภักดี ซื่อสัตย์ และแสนรู้ เป็นสัตว์เลี้ยงยอดนิยมอันดับหนึ่งของคนทั่วโลก</td>
-                    </tr>
+<script>
+    // ฟังก์ชันเพิ่มข้อมูลลงในตาราง
+    function addData() {
+        const nameInput = document.getElementById('nameInput');
+        const roleInput = document.getElementById('roleInput');
+        const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
 
-                    <tr>
-                        <td class="col-number">2</td>
-                        <td>
-                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80" alt="แมว" class="animal-img">
-                        </td>
-                        <td class="animal-name">แมว (Cat)</td>
-                        <td>เจ้านายตัวน้อยผู้รักอิสระ มีความนุ่มนิ่ม ขี้อ้อนในบางเวลา และชอบสร้างเสียงหัวเราะให้ทาสแมว</td>
-                    </tr>
+        // ตรวจสอบว่ากรอกข้อมูลครบไหม
+        if (nameInput.value.trim() === '' || roleInput.value.trim() === '') {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วนครับ');
+            return;
+        }
 
-                    <tr>
-                        <td class="col-number">3</td>
-                        <td>
-                            <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=500&q=80" alt="แพนด้า" class="animal-img">
-                        </td>
-                        <td class="animal-name">แพนด้า (Panda)</td>
-                        <td>หมีอ้วนจอมขี้เกียจ ขวัญใจเด็กๆ ที่ชอบการกินไผ่ เคี้ยวกรุบกรอบ และนอนกลิ้งไปมาตลอดทั้งวัน</td>
-                    </tr>
+        // สร้างแถวใหม่ (Row)
+        const newRow = tableBody.insertRow();
 
-                    <tr>
-                        <td class="col-number">4</td>
-                        <td>
-                            <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" alt="ช้าง" class="animal-img">
-                        </td>
-                        <td class="animal-name">ช้าง (Elephant)</td>
-                        <td>สัตว์บกที่ใหญ่ที่สุดในโลก มีความฉลาด อ่อนโยน มีความจำดีเลิศ และผูกพันกับวิถีชีวิตคนไทย</td>
-                    </tr>
+        // สร้างเซลล์ข้อมูล (Cells)
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
 
-                    <tr>
-                        <td class="col-number">5</td>
-                        <td>
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZjhwHsHR3DoSEoVSFkFuxXGvIp2zGYgLX3rZiqhHm9vvGBdOv17y2CUpY&s=10" alt="เพนกวิน" class="animal-img">
-                        </td>
-                        <td class="animal-name">เพนกวิน (Penguin)</td>
-                        <td>เจ้านกบินไม่ได้ในชุดทักซิโด้สุดเท่ เดินเตาะแตะน่ารัก และชอบว่ายน้ำโต้คลื่นในแดนน้ำแข็ง</td>
-                    </tr>
+        // ใส่ค่าลงในเซลล์
+        cell1.textContent = nameInput.value;
+        cell2.textContent = roleInput.value;
+        
+        // สร้างปุ่มลบข้อมูล
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'ลบ';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.onclick = function() {
+            tableBody.deleteRow(newRow.rowIndex - 1); // ลบแถวนั้นๆ ออก
+        };
+        cell3.appendChild(deleteBtn);
 
-                    <tr>
-                        <td class="col-number">6</td>
-                        <td>
-                            <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=500&q=80" alt="สิงโต" class="animal-img">
-                        </td>
-                        <td class="animal-name">สิงโต (Lion)</td>
-                        <td>ราชาแห่งสัตว์ป่าผู้สง่างาม น่าเกรงขาม มีแผงคอที่เป็นเอกลักษณ์ และเป็นผู้นำแห่งท้องทุ่งสะวันนา</td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Amazing Animals Gallery. สร้างด้วยความภูมิใจโดยคุณ</p>
-    </footer>
+        // เคลียร์ค่าในช่อง Input หลังจากเพิ่มเสร็จ
+        nameInput.value = '';
+        roleInput.value = '';
+    }
+</script>
 
 </body>
 </html>
+

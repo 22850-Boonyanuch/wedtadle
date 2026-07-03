@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Data Table - ระบบบันทึกข้อมูลสัตว์โลก</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        /* ส่วนฟอร์มกรอกข้อมูล */
+        .form-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .form-control {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+        }
+
+        .btn-submit {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #27ae60;
+        }
+
+        /* ส่วนตารางข้อมูล */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #dee2e6;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        /* ปุ่มลบแถว */
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #adb5bd;
+            font-style: italic;
+            padding: 30px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📊 ระบบบันทึกและจัดการข้อมูลสัตว์</h1>
+
+        <div class="form-container">
+            <form id="animalForm" onsubmit="addData(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="animalName">ชื่อสัตว์ (ภาษาไทย)</label>
+                        <input type="text" id="animalName" class="form-control" placeholder="เช่น สุนัข, แมว" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="animalType">ประเภท</label>
+                        <select id="animalType" class="form-control" required>
+                            <option value="">-- เลือกประเภท --</option>
+                            <option value="สัตว์เลี้ยง">สัตว์เลี้ยง</option>
+                            <option value="สัตว์ป่า">สัตว์ป่า</option>
+                            <option value="สัตว์ปีก">สัตว์ปีก</option>
+                            <option value="สัตว์น้ำ">สัตว์น้ำ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="animalDetails">คำอธิบาย/จุดเด่น</label>
+                        <input type="text" id="animalDetails" class="form-control" placeholder="เช่น ซื่อสัตย์ แสนรู้" required>
+                    </div>
+                    <button type="submit" class="btn-submit">+ เพิ่มข้อมูล</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">ลำดับ</th>
+                        <th style="width: 25%;">ชื่อสัตว์</th>
+                        <th style="width: 20%;">ประเภท</th>
+                        <th style="width: 35%;">คำอธิบาย/จุดเด่น</th>
+                        <th style="width: 12%;">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // ดึงข้อมูลเก่าที่เคยบันทึกไว้ในเบราว์เซอร์ (ถ้ามี) ถ้าไม่มีให้ใช้ข้อมูลเริ่มต้น 3 ตัว
+        let animalList = JSON.parse(localStorage.getItem('animals')) || [
+            { name: "สุนัข", type: "สัตว์เลี้ยง", details: "เพื่อนแท้สี่ขาที่มีความจงรักภักดี ซื่อสัตย์ และแสนรู้" },
+            { name: "แมว", type: "สัตว์เลี้ยง", details: "เจ้านายตัวน้อยผู้รักอิสระ มีความนุ่มนิ่ม ขี้อ้อน" },
+            { name: "เพนกวิน", type: "สัตว์เมืองหนาว/ปีก", details: "เจ้านกบินไม่ได้ เดินเตาะแตะน่ารัก ชอบว่ายน้ำโต้คลื่น" }
+        ];
+
+        // ฟังก์ชันสำหรับวาดตารางใหม่ทุกครั้งที่มีการเปลี่ยนแปลง
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = ''; // ล้างข้อมูลเก่าในตารางก่อน
+
+            if (animalList.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="no-data">❌ ยังไม่มีข้อมูลในตาราง กรุณาเพิ่มข้อมูลด้านบน</td></tr>`;
+                return;
+            }
+
+            animalList.forEach((animal, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${animal.name}</strong></td>
+                    <td>${animal.type}</td>
+                    <td>${animal.details}</td>
+                    <td><button class="btn-delete" onclick="deleteData(${index})">ลบ</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // ฟังก์ชันสำหรับเพิ่มข้อมูล
+        function addData(event) {
+            event.preventDefault(); // ป้องกันไม่ให้หน้าเว็บรีเฟรชตอนกดส่งฟอร์ม
+
+            const nameInput = document.getElementById('animalName');
+            const typeInput = document.getElementById('animalType');
+            const detailsInput = document.getElementById('animalDetails');
+
+            // สร้างอ็อบเจกต์ข้อมูลใหม่
+            const newAnimal = {
+                name: nameInput.value,
+                type: typeInput.value,
+                details: detailsInput.value
+            };
+
+            // เพิ่มเข้าอาเรย์หลัก และบันทึกลง LocalStorage
+            animalList.push(newAnimal);
+            localStorage.setItem('animals', JSON.stringify(animalList));
+
+            // อัปเดตตารางให้แสดงผลข้อมูลใหม่
+            renderTable();
+
+            // ล้างค่าในฟอร์มเพื่อให้พร้อมกรอกตัวต่อไป
+            document.getElementById('animalForm').reset();
+        }
+
+        // ฟังก์ชันสำหรับลบข้อมูลตามแถวที่เลือก
+        function deleteData(index) {
+            if (confirm(`คุณแน่ใจใช่ไหมว่าจะลบข้อมูลของ "${animalList[index].name}"?`)) {
+                animalList.splice(index, 1); // ลบข้อมูลออกจากอาเรย์
+                localStorage.setItem('animals', JSON.stringify(animalList)); // บันทึกค่าใหม่ลงตัวเครื่อง
+                renderTable(); // วาดตารางใหม่
+            }
+        }
+
+        // สั่งให้ตารางทำงานทันทีเมื่อเปิดหน้าเว็บครั้งแรก
+        renderTable();
+    </script>
+</body>
+</html>

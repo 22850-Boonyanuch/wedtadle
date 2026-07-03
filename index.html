@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -12,7 +13,7 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 950px; /* ขยายขนาดหน้าต่างให้รองรับข้อมูลที่เพิ่มขึ้น */
             margin: auto;
             background: white;
             padding: 20px;
@@ -26,13 +27,19 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap; /* รองรับการแสดงผลบนมือถือ */
         }
         input {
             flex: 1;
+            min-width: 150px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+        }
+        /* กำหนดขนาดช่องอายุให้แคบลงหน่อย */
+        #ageInput {
+            flex: 0 0 80px; 
         }
         button {
             padding: 10px 20px;
@@ -65,6 +72,10 @@
             background-color: #e74c3c;
             padding: 5px 10px;
             font-size: 14px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
         .delete-btn:hover { background-color: #c0392b; }
     </style>
@@ -76,6 +87,8 @@
     
     <div class="form-group">
         <input type="text" id="nameInput" placeholder="ชื่อ-นามสกุล">
+        <input type="number" id="ageInput" placeholder="อายุ" min="0">
+        <input type="email" id="emailInput" placeholder="อีเมล">
         <input type="text" id="roleInput" placeholder="ตำแหน่ง / บทบาท">
         <button onclick="addData()">เพิ่มข้อมูล</button>
     </div>
@@ -84,6 +97,8 @@
         <thead>
             <tr>
                 <th>ชื่อ-นามสกุล</th>
+                <th>อายุ</th>
+                <th>อีเมล</th>
                 <th>ตำแหน่ง / บทบาท</th>
                 <th>จัดการ</th>
             </tr>
@@ -94,41 +109,49 @@
 </div>
 
 <script>
-    // ฟังก์ชันเพิ่มข้อมูลลงในตาราง
     function addData() {
+        // ดึงค่าจาก Input ทั้งหมด
         const nameInput = document.getElementById('nameInput');
+        const ageInput = document.getElementById('ageInput');
+        const emailInput = document.getElementById('emailInput');
         const roleInput = document.getElementById('roleInput');
         const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
 
-        // ตรวจสอบว่ากรอกข้อมูลครบไหม
-        if (nameInput.value.trim() === '' || roleInput.value.trim() === '') {
-            alert('กรุณากรอกข้อมูลให้ครบถ้วนครับ');
+        // ตรวจสอบว่ากรอกข้อมูลครบทุกช่องไหม
+        if (!nameInput.value.trim() || !ageInput.value.trim() || !emailInput.value.trim() || !roleInput.value.trim()) {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วนทุกช่องครับ');
             return;
         }
 
         // สร้างแถวใหม่ (Row)
         const newRow = tableBody.insertRow();
 
-        // สร้างเซลล์ข้อมูล (Cells)
+        // สร้างเซลล์ข้อมูลทั้งหมด 5 เซลล์ (รวมปุ่มลบ)
         const cell1 = newRow.insertCell(0);
         const cell2 = newRow.insertCell(1);
         const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+        const cell5 = newRow.insertCell(4);
 
-        // ใส่ค่าลงในเซลล์
+        // ใส่ค่าลงในแต่ละเซลล์
         cell1.textContent = nameInput.value;
-        cell2.textContent = roleInput.value;
+        cell2.textContent = ageInput.value;
+        cell3.textContent = emailInput.value;
+        cell4.textContent = roleInput.value;
         
         // สร้างปุ่มลบข้อมูล
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'ลบ';
         deleteBtn.className = 'delete-btn';
         deleteBtn.onclick = function() {
-            tableBody.deleteRow(newRow.rowIndex - 1); // ลบแถวนั้นๆ ออก
+            tableBody.deleteRow(newRow.rowIndex - 1);
         };
-        cell3.appendChild(deleteBtn);
+        cell5.appendChild(deleteBtn);
 
-        // เคลียร์ค่าในช่อง Input หลังจากเพิ่มเสร็จ
+        // เคลียร์ค่าในช่อง Input ทั้งหมดหลังจากเพิ่มเสร็จ
         nameInput.value = '';
+        ageInput.value = '';
+        emailInput.value = '';
         roleInput.value = '';
     }
 </script>

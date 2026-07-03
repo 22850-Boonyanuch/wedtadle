@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Data Table - ระบบบันทึกข้อมูลสัตว์โลก</title>
+    <title>Amazing Animals - ตารางข้อมูลสัตว์โลกน่ารัก</title>
     <style>
         * {
             margin: 0;
@@ -15,257 +16,203 @@
         body {
             background-color: #f4f7f6;
             color: #333;
-            padding: 40px 20px;
+            padding-bottom: 60px;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 2rem;
-        }
-
-        /* ส่วนฟอร์มกรอกข้อมูล */
-        .form-container {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border: 1px solid #e9ecef;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        .form-group {
+        /* Header */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            height: 35vh;
             display: flex;
             flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            color: #495057;
-            font-weight: 600;
-        }
-
-        .form-control {
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-control:focus {
-            border-color: #3498db;
-        }
-
-        .btn-submit {
-            background-color: #2ecc71;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             color: white;
-            border: none;
-            padding: 11px 20px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
+            padding: 20px;
+            margin-bottom: 40px;
         }
 
-        .btn-submit:hover {
-            background-color: #27ae60;
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* ส่วนตารางข้อมูล */
+        header p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Main Content Container */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Responsive Table Container */
         .table-container {
-            overflow-x: auto;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow-x: auto; /* รองรับการเลื่อนบนมือถือ */
         }
 
+        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            margin-top: 10px;
         }
 
         th {
             background-color: #2c3e50;
             color: white;
-            padding: 14px 16px;
+            padding: 18px;
+            font-size: 1.05rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
 
         td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #dee2e6;
-            color: #495057;
-            font-size: 0.95rem;
+            padding: 16px;
+            border-bottom: 1px solid #eef2f3;
+            vertical-align: middle;
+            color: #4a5568;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        tr:hover {
-            background-color: #f1f3f5;
-        }
-
-        /* ปุ่มลบแถว */
-        .btn-delete {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.2s;
-        }
-
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-
-        .no-data {
+        /* ลำดับตัวเลข */
+        .col-number {
+            font-weight: bold;
+            color: #718096;
             text-align: center;
-            color: #adb5bd;
-            font-style: italic;
-            padding: 30px !important;
+            width: 8%;
+        }
+
+        /* ตกแต่งรูปภาพในตาราง */
+        .animal-img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: block;
+        }
+
+        /* ชื่อสัตว์ */
+        .animal-name {
+            font-size: 1.1rem;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* แถวสลับสีเพื่อให้ดูง่าย */
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* เอฟเฟกต์เมื่อวางเมาส์เหนือแถว */
+        tr:hover {
+            background-color: #edf2f7;
+            transition: background-color 0.2s ease;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 60px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>📊 ระบบบันทึกและจัดการข้อมูลสัตว์</h1>
+    <header>
+        <h1>Amazing Animals Table</h1>
+        <p>ตารางสรุปข้อมูล ภาพถ่าย และลักษณะเด่นของเหล่าสัตว์โลกน่ารัก</p>
+    </header>
 
-        <div class="form-container">
-            <form id="animalForm" onsubmit="addData(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="animalName">ชื่อสัตว์ (ภาษาไทย)</label>
-                        <input type="text" id="animalName" class="form-control" placeholder="เช่น สุนัข, แมว" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="animalType">ประเภท</label>
-                        <select id="animalType" class="form-control" required>
-                            <option value="">-- เลือกประเภท --</option>
-                            <option value="สัตว์เลี้ยง">สัตว์เลี้ยง</option>
-                            <option value="สัตว์ป่า">สัตว์ป่า</option>
-                            <option value="สัตว์ปีก">สัตว์ปีก</option>
-                            <option value="สัตว์น้ำ">สัตว์น้ำ</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="animalDetails">คำอธิบาย/จุดเด่น</label>
-                        <input type="text" id="animalDetails" class="form-control" placeholder="เช่น ซื่อสัตย์ แสนรู้" required>
-                    </div>
-                    <button type="submit" class="btn-submit">+ เพิ่มข้อมูล</button>
-                </div>
-            </form>
-        </div>
-
+    <main>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">ลำดับ</th>
-                        <th style="width: 25%;">ชื่อสัตว์</th>
-                        <th style="width: 20%;">ประเภท</th>
-                        <th style="width: 35%;">คำอธิบาย/จุดเด่น</th>
-                        <th style="width: 12%;">จัดการ</th>
+                        <th style="text-align: center;">ลำดับ</th>
+                        <th>รูปภาพ</th>
+                        <th>ชื่อสัตว์</th>
+                        <th>รายละเอียดและลักษณะเด่น</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    </tbody>
+                <tbody>
+
+                    <tr>
+                        <td class="col-number">1</td>
+                        <td>
+                            <img src="https://www.shutterstock.com/image-photo/ein-hundewelpe-ist-draussen-und-260nw-2478953593.jpg" alt="สุนัข" class="animal-img">
+                        </td>
+                        <td class="animal-name">สุนัข (Dog)</td>
+                        <td>เพื่อนแท้สี่ขาที่มีความจงรักภักดี ซื่อสัตย์ และแสนรู้ เป็นสัตว์เลี้ยงยอดนิยมอันดับหนึ่งของคนทั่วโลก</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-number">2</td>
+                        <td>
+                            <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=500&q=80" alt="แมว" class="animal-img">
+                        </td>
+                        <td class="animal-name">แมว (Cat)</td>
+                        <td>เจ้านายตัวน้อยผู้รักอิสระ มีความนุ่มนิ่ม ขี้อ้อนในบางเวลา และชอบสร้างเสียงหัวเราะให้ทาสแมว</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-number">3</td>
+                        <td>
+                            <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=500&q=80" alt="แพนด้า" class="animal-img">
+                        </td>
+                        <td class="animal-name">แพนด้า (Panda)</td>
+                        <td>หมีอ้วนจอมขี้เกียจ ขวัญใจเด็กๆ ที่ชอบการกินไผ่ เคี้ยวกรุบกรอบ และนอนกลิ้งไปมาตลอดทั้งวัน</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-number">4</td>
+                        <td>
+                            <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=500&q=80" alt="ช้าง" class="animal-img">
+                        </td>
+                        <td class="animal-name">ช้าง (Elephant)</td>
+                        <td>สัตว์บกที่ใหญ่ที่สุดในโลก มีความฉลาด อ่อนโยน มีความจำดีเลิศ และผูกพันกับวิถีชีวิตคนไทย</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-number">5</td>
+                        <td>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZjhwHsHR3DoSEoVSFkFuxXGvIp2zGYgLX3rZiqhHm9vvGBdOv17y2CUpY&s=10" alt="เพนกวิน" class="animal-img">
+                        </td>
+                        <td class="animal-name">เพนกวิน (Penguin)</td>
+                        <td>เจ้านกบินไม่ได้ในชุดทักซิโด้สุดเท่ เดินเตาะแตะน่ารัก และชอบว่ายน้ำโต้คลื่นในแดนน้ำแข็ง</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-number">6</td>
+                        <td>
+                            <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=500&q=80" alt="สิงโต" class="animal-img">
+                        </td>
+                        <td class="animal-name">สิงโต (Lion)</td>
+                        <td>ราชาแห่งสัตว์ป่าผู้สง่างาม น่าเกรงขาม มีแผงคอที่เป็นเอกลักษณ์ และเป็นผู้นำแห่งท้องทุ่งสะวันนา</td>
+                    </tr>
+
+                </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
-    <script>
-        // ดึงข้อมูลเก่าที่เคยบันทึกไว้ในเบราว์เซอร์ (ถ้ามี) ถ้าไม่มีให้ใช้ข้อมูลเริ่มต้น 3 ตัว
-        let animalList = JSON.parse(localStorage.getItem('animals')) || [
-            { name: "สุนัข", type: "สัตว์เลี้ยง", details: "เพื่อนแท้สี่ขาที่มีความจงรักภักดี ซื่อสัตย์ และแสนรู้" },
-            { name: "แมว", type: "สัตว์เลี้ยง", details: "เจ้านายตัวน้อยผู้รักอิสระ มีความนุ่มนิ่ม ขี้อ้อน" },
-            { name: "เพนกวิน", type: "สัตว์เมืองหนาว/ปีก", details: "เจ้านกบินไม่ได้ เดินเตาะแตะน่ารัก ชอบว่ายน้ำโต้คลื่น" }
-        ];
+    <footer>
+        <p>&copy; 2026 Amazing Animals Gallery. สร้างด้วยความภูมิใจโดยคุณ</p>
+    </footer>
 
-        // ฟังก์ชันสำหรับวาดตารางใหม่ทุกครั้งที่มีการเปลี่ยนแปลง
-        function renderTable() {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = ''; // ล้างข้อมูลเก่าในตารางก่อน
-
-            if (animalList.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" class="no-data">❌ ยังไม่มีข้อมูลในตาราง กรุณาเพิ่มข้อมูลด้านบน</td></tr>`;
-                return;
-            }
-
-            animalList.forEach((animal, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td><strong>${animal.name}</strong></td>
-                    <td>${animal.type}</td>
-                    <td>${animal.details}</td>
-                    <td><button class="btn-delete" onclick="deleteData(${index})">ลบ</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // ฟังก์ชันสำหรับเพิ่มข้อมูล
-        function addData(event) {
-            event.preventDefault(); // ป้องกันไม่ให้หน้าเว็บรีเฟรชตอนกดส่งฟอร์ม
-
-            const nameInput = document.getElementById('animalName');
-            const typeInput = document.getElementById('animalType');
-            const detailsInput = document.getElementById('animalDetails');
-
-            // สร้างอ็อบเจกต์ข้อมูลใหม่
-            const newAnimal = {
-                name: nameInput.value,
-                type: typeInput.value,
-                details: detailsInput.value
-            };
-
-            // เพิ่มเข้าอาเรย์หลัก และบันทึกลง LocalStorage
-            animalList.push(newAnimal);
-            localStorage.setItem('animals', JSON.stringify(animalList));
-
-            // อัปเดตตารางให้แสดงผลข้อมูลใหม่
-            renderTable();
-
-            // ล้างค่าในฟอร์มเพื่อให้พร้อมกรอกตัวต่อไป
-            document.getElementById('animalForm').reset();
-        }
-
-        // ฟังก์ชันสำหรับลบข้อมูลตามแถวที่เลือก
-        function deleteData(index) {
-            if (confirm(`คุณแน่ใจใช่ไหมว่าจะลบข้อมูลของ "${animalList[index].name}"?`)) {
-                animalList.splice(index, 1); // ลบข้อมูลออกจากอาเรย์
-                localStorage.setItem('animals', JSON.stringify(animalList)); // บันทึกค่าใหม่ลงตัวเครื่อง
-                renderTable(); // วาดตารางใหม่
-            }
-        }
-
-        // สั่งให้ตารางทำงานทันทีเมื่อเปิดหน้าเว็บครั้งแรก
-        renderTable();
-    </script>
 </body>
 </html>
